@@ -1,0 +1,312 @@
+.rowWrapper {
+  height: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  cursor: move;
+}
+
+.rowWrapper:hover {
+  opacity: 0.7;
+}
+
+.rowWrapper:active {
+  opacity: 1;
+}
+
+
+.rowWrapperDragDisabled {
+  cursor: default;
+}
+
+.row {
+  height: 100%;
+  white-space: nowrap;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.row > * {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/**\n * The outline of where the element will go if dropped, displayed while dragging\n */
+
+.rowLandingPad, .rowCancelPad {
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.rowLandingPad *, .rowCancelPad * {
+  opacity: 0 !important;
+}
+
+.rowLandingPad::before, .rowCancelPad::before {
+  background-color: lightblue;
+  border: 2px dotted black;
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/**\n * Alternate appearance of the landing pad when the dragged location is invalid\n */
+
+.rowCancelPad::before {
+  background-color: #e6a8ad;
+}
+
+/**\n * Nodes matching the search conditions are highlighted\n */
+
+.rowSearchMatch {
+  -webkit-box-shadow: inset 0 -7px 7px -3px #0080ff;
+  box-shadow: inset 0 -7px 7px -3px #0080ff;
+}
+
+/**\n * The node that matches the search conditions and is currently focused\n */
+
+.rowSearchFocus {
+  -webkit-box-shadow: inset 0 -7px 7px -3px #fc6421;
+  box-shadow: inset 0 -7px 7px -3px #fc6421;
+}
+
+.rowContents, .rowLabel, .rowToolbar, .toolbarButton {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.rowContents {
+  position: relative;
+  height: 100%;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.rowLabel {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  padding-right: 20px;
+}
+
+.rowToolbar {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.collapseButton, .expandButton {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  z-index: 2;
+  position: absolute;
+  top: 45%;
+  width: 30px;
+  height: 30px;
+  -webkit-transform: translate3d(-50%, -50%, 0);
+  transform: translate3d(-50%, -50%, 0);
+  cursor: pointer;
+}
+
+.collapseButton::after, .expandButton::after {
+  content: '';
+  position: absolute;
+  -webkit-transform-origin: 7px 4px;
+  -ms-transform-origin: 7px 4px;
+  transform-origin: 7px 4px;
+  -webkit-transform: translate3d(-50%, -20%, 0);
+  transform: translate3d(-50%, -20%, 0);
+  border: solid transparent 10px;
+  border-left-width: 7px;
+  border-right-width: 7px;
+  border-top-color: gray;
+}
+
+.collapseButton:hover::after, .expandButton:hover::after {
+  border-top-color: black;
+}
+
+.collapseButton:focus, .expandButton:focus {
+  outline: none;
+}
+
+.collapseButton:focus::after, .expandButton:focus::after {
+  -webkit-filter: drop-shadow(0 0 1px #83bef9) drop-shadow(0 0 1px #83bef9) drop-shadow(0 0 1px #83bef9);
+  filter: drop-shadow(0 0 1px #83bef9) drop-shadow(0 0 1px #83bef9) drop-shadow(0 0 1px #83bef9);
+}
+
+.expandButton::after {
+  -webkit-transform: translate3d(-50%, -20%, 0) rotateZ(-90deg);
+  transform: translate3d(-50%, -20%, 0) rotateZ(-90deg);
+}
+
+/**\n * Line for under a node with children\n */
+
+.lineChildren {
+  height: 100%;
+  display: inline-block;
+}
+
+/* ==========================================================================\n   Scaffold\n\n    Line-overlaid blocks used for showing the tree structure\n   ========================================================================== */
+.lineBlock, .absoluteLineBlock {
+  height: 100%;
+  position: relative;
+  display: inline-block;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.absoluteLineBlock {
+  position: absolute;
+  top: 0;
+}
+
+/* Highlight line for pointing to dragged row destination\n   ========================================================================== *//**\n * +--+--+\n * |  |  |\n * |  |  |\n * |  |  |\n * +--+--+\n */
+
+.highlightLineVertical {
+  z-index: 3;
+}
+
+.highlightLineVertical::before {
+  position: absolute;
+  content: '';
+  background-color: #36c2f6;
+  width: 6px;
+  margin-left: -3px;
+  left: 50%;
+  top: 0;
+  height: 100%;
+}
+
+@-webkit-keyframes rstcustom__arrow-pulse {
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  30% {
+    -webkit-transform: translate(0, 300%);
+    transform: translate(0, 300%);
+    opacity: 1;
+  }
+  70% {
+    -webkit-transform: translate(0, 700%);
+    transform: translate(0, 700%);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translate(0, 1000%);
+    transform: translate(0, 1000%);
+    opacity: 0;
+  }
+}
+
+@keyframes rstcustom__arrow-pulse {
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  30% {
+    -webkit-transform: translate(0, 300%);
+    transform: translate(0, 300%);
+    opacity: 1;
+  }
+  70% {
+    -webkit-transform: translate(0, 700%);
+    transform: translate(0, 700%);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translate(0, 1000%);
+    transform: translate(0, 1000%);
+    opacity: 0;
+  }
+}
+
+.highlightLineVertical::after {
+  content: '';
+  position: absolute;
+  height: 0;
+  margin-left: -3px;
+  left: 50%;
+  top: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 3px solid white;
+  -webkit-animation: rstcustom__arrow-pulse 1s infinite linear both;
+  animation: rstcustom__arrow-pulse 1s infinite linear both;
+}
+
+/**\n * +-----+\n * |     |\n * |  +--+\n * |  |  |\n * +--+--+\n */
+
+.highlightTopLeftCorner::before {
+  z-index: 3;
+  content: '';
+  position: absolute;
+  border-top: solid 6px #36c2f6;
+  border-left: solid 6px #36c2f6;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: calc(50% + 3px);
+  top: 50%;
+  margin-top: -3px;
+  right: 0;
+  width: calc(50% + 3px);
+}
+
+/**\n * +--+--+\n * |  |  |\n * |  |  |\n * |  +->|\n * +-----+\n */
+
+.highlightBottomLeftCorner {
+  z-index: 3;
+}
+
+.highlightBottomLeftCorner::before {
+  content: '';
+  position: absolute;
+  border-bottom: solid 6px #36c2f6;
+  border-left: solid 6px #36c2f6;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: calc(100% + 3px);
+  top: 0;
+  right: 7px;
+  width: calc(50% - 4px);
+}
+
+.highlightBottomLeftCorner::after {
+  content: '';
+  position: absolute;
+  height: 0;
+  right: 0;
+  top: 100%;
+  margin-top: -7px;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 7px solid #36c2f6;
+}
